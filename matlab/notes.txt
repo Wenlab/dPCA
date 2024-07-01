@@ -1,0 +1,5 @@
+1. 在dpca_getNoiseCovariance.m中elseif strcmp(options.type, 'averaged')后面加入re-balance的noise covariance matrix的计算。√
+2. demo的step4里，Cnoise = dpca_getNoiseCovariance(firingRatesAverage, ...
+    firingRates, trialNum, 'simultaneous', ifSimultaneousRecording);加入'type','averaged'参数对。√
+3. demo开头模拟数据构建时，ifSimultaneousRecording = false;改为true。√
+4. 检查一下dpca_optimizeLambda.m中有没有需要改的（主要是Cnoise的估计）（dpca_optimizeLambda加入参数对'noiseCovType', 'averaged'）。√

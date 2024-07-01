@@ -41,8 +41,20 @@ else
         dimProd = prod(dims(2:end));
         Cnoise = Cnoise * dimProd;
     elseif strcmp(options.type, 'averaged')
-        display('Averaged noise covariance computation is not yet implemented')
-        display('for the simultaneously recorded data. Returning the pooled')
-        display('noise covariance matrix instead.')
+        Xnoise = bsxfun(@minus, Xtrial, Xfull);
+        Cnoise = zeros(size(Xnoise,1));
+        for stimulus=1:size(Xnoise,2)
+            for decision=1:size(Xnoise,3)
+                for time=1:size(Xnoise,4)
+                    Xtemp = squeeze(Xnoise(:,stimulus,decision,time,:));
+                    Xtemp = Xtemp(:, ~isnan(Xtemp(1,:)));
+                    Cnoise_temp = Xtemp*Xtemp'/size(Xtemp,2);
+                    Cnoise = Cnoise + Cnoise_temp;
+                end
+            end
+        end
+%         display('Averaged noise covariance computation is not yet implemented')
+%         display('for the simultaneously recorded data. Returning the pooled')
+%         display('noise covariance matrix instead.')
     end
 end
