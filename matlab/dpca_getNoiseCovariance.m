@@ -43,16 +43,25 @@ else
     elseif strcmp(options.type, 'averaged')
         Xnoise = bsxfun(@minus, Xtrial, Xfull);
         Cnoise = zeros(size(Xnoise,1));
-        for stimulus=1:size(Xnoise,2)
-            for decision=1:size(Xnoise,3)
-                for time=1:size(Xnoise,4)
-                    Xtemp = squeeze(Xnoise(:,stimulus,decision,time,:));
-                    Xtemp = Xtemp(:, ~isnan(Xtemp(1,:)));
-                    Cnoise_temp = Xtemp*Xtemp'/size(Xtemp,2);
-                    Cnoise = Cnoise + Cnoise_temp;
-                end
-            end
+        % consider the situation with no stimulus or no decision
+        size_Xnoise = size(Xnoise);
+        Xtemp1 = reshape(Xnoise,size_Xnoise(1),[],size_Xnoise(end));
+        for idx_condition=1:size(Xtemp1,2)
+            Xtemp2 = squeeze(Xtemp1(:,idx_condition,:));
+            Xtemp2 = Xtemp2(:, ~isnan(Xtemp2(1,:)));
+            Cnoise_temp = Xtemp2*Xtemp2'/size(Xtemp2,2);
+            Cnoise = Cnoise + Cnoise_temp;
         end
+        % for stimulus=1:size(Xnoise,2)
+        %     for decision=1:size(Xnoise,3)
+        %         for time=1:size(Xnoise,4)
+        %             Xtemp = squeeze(Xnoise(:,stimulus,decision,time,:));
+        %             Xtemp = Xtemp(:, ~isnan(Xtemp(1,:)));
+        %             Cnoise_temp = Xtemp*Xtemp'/size(Xtemp,2);
+        %             Cnoise = Cnoise + Cnoise_temp;
+        %         end
+        %     end
+        % end
 %         display('Averaged noise covariance computation is not yet implemented')
 %         display('for the simultaneously recorded data. Returning the pooled')
 %         display('noise covariance matrix instead.')
