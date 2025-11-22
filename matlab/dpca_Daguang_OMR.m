@@ -1,7 +1,7 @@
 %% load data and set parameters
 path_working = 'E:\\WenLab\\neural_activity_analysis\\';
-load(fullfile(path_working,'2025-10-21_OMR\\CalTrace\\trials.mat'));
-trials = trials_control; % trials_test/trials_stimulus_control/trials_stimulus_test
+load(fullfile(path_working,'2025-10-21_OMR\\CalTrace\\trials_short.mat'));
+trials = trials_control; % trials_control/trials_test/trials_stimulus_control/trials_stimulus_test
 trial_type = 1; % 1: trial sync with bout; 2: trial sync with stimulus
 
 num_trials = size(trials,2);
